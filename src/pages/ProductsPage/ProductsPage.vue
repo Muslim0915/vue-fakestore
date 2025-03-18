@@ -5,7 +5,7 @@ import AppButton from "@/components/ui/AppButton.vue";
 import AppFilter from "@/components/ui/AppFilter.vue";
 import { useFetch } from "@vueuse/core";
 import { useStore } from "@/stores/index.ts";
-import { ICategory } from "@/services/typing";
+import {ICategory, IProduct} from "@/services/typing";
 import {useProducts} from "@/composables/useProducts.ts";
 import AppSearch from "@/components/ui/AppSearch.vue";
 
@@ -21,7 +21,7 @@ const { data: categoriesData } = useFetch<ICategory[]>(`${store.state.API_URL}/p
 });
 
 const { products, fetchProducts } = useProducts();
-const allProducts = ref([]);
+const allProducts = ref<IProduct[]>([]);
 const searchQuery = ref("");
 
 
