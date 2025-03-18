@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 const brands = [
-  {id: 1, url: 'src/assets/images/png/versace.png'},
-  {id: 2, url: 'src/assets/images/png/zara.png'},
-  {id: 2, url: 'src/assets/images/png/gucci.png'},
-  {id: 2, url: 'src/assets/images/png/prada.png'},
-  {id: 2, url: 'src/assets/images/png/calvin-klein.png'},
+  {id: 1, url: '/images/png/versace.png'},
+  {id: 2, url: '/images/png/zara.png'},
+  {id: 2, url: '/images/png/gucci.png'},
+  {id: 2, url: '/images/png/prada.png'},
+  {id: 2, url: '/images/png/calvin-klein.png'},
 
 ]
 </script>

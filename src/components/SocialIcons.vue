@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const socialLinks = [
-  {id: 1, src: 'src/assets/images/svg/telegram.svg', href: 'https://t.me/qpaHaPuK'},
-  {id: 2, src: 'src/assets/images/svg/github.svg', href: 'https://github.com/Muslim0915'},
-  {id: 3, src: 'src/assets/images/svg/instagram.svg', href: 'https://www.instagram.com/muslim0915_/'},
+  {id: 1, src: '/images/svg/telegram.svg', href: 'https://t.me/qpaHaPuK'},
+  {id: 2, src: '/images/svg/github.svg', href: 'https://github.com/Muslim0915'},
+  {id: 3, src: '/images/svg/instagram.svg', href: 'https://www.instagram.com/muslim0915_/'},
 ]
 </script>
 
