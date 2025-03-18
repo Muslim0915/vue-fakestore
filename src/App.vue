@@ -9,7 +9,7 @@ const store = useStore();
 
 <template>
   <div class="app">
-    <AppLoader v-if="store.isLoading" />
+    <AppLoader v-if="store.state.isLoading" />
     <AppNavbar />
     <main>
       <router-view />
