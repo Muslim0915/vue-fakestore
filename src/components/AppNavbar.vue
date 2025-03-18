@@ -37,8 +37,8 @@ watch(
     isDark,
     () => {
       themeImagePath.value = isDark.value
-          ? "src/assets/images/svg/dark-mode.svg"
-          : "src/assets/images/svg/light-mode.svg";
+          ? "/images/svg/dark-mode.svg"
+          : "/images/svg/light-mode.svg";
     },
     { immediate: true }
 );
