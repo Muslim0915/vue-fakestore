@@ -1,16 +1,14 @@
 <script lang="ts" setup>
 import { useDark, useToggle } from "@vueuse/core";
 import { computed, ref, watch } from "vue";
-import { useAuthStore } from "@/stores/authStore"; // Подключаем authStore
-import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
 import AppButton from "@/components/ui/AppButton.vue";
 import AppLogo from "@/components/AppLogo.vue";
 import BurgerMenuButton from "@/components/ui/BurgerMenuButton.vue";
 import { useCartStore } from "@/stores/cartStore.ts";
 
 const cartStore = useCartStore();
-const authStore = useAuthStore(); // Получаем состояние авторизации
-const router = useRouter();
+const authStore = useAuthStore();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
