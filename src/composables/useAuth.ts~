@@ -1,0 +1,32 @@
+import { ref, onMounted } from "vue";
+import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/firebase/index.ts";
+
+const user = ref<User | null>(null);
+
+export function useAuth() {
+    const provider = new GoogleAuthProvider();
+
+    const loginWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            user.value = result.user;
+        } catch (error) {
+            console.error("Google Login Error:", error);
+        }
+    };
+
+    const logout = async () => {
+        await signOut(auth);
+        user.value = null;
+    };
+
+    
+    onMounted(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+            user.value = currentUser;
+        });
+    });
+
+    return { user, loginWithGoogle, logout };
+}

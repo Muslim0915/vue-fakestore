@@ -1,0 +1,48 @@
+<script lang="ts" setup>
+
+import AppButton from "@/components/ui/AppButton.vue";
+
+const qualities = [
+  {id: 1, title: '200+', text: 'International Brands'},
+  {id: 2, title: '2,000+', text: 'High-Quality Products'},
+  {id: 3, title: '30,000+', text: 'Happy Customers'},
+];
+
+const brands = [
+  {id: 1, url: '/images/png/versace.png'},
+  {id: 2, url: '/images/png/zara.png'},
+  {id: 2, url: '/images/png/gucci.png'},
+  {id: 2, url: '/images/png/prada.png'},
+  {id: 2, url: '/images/png/calvin-klein.png'},
+
+]
+</script>
+
+<template>
+  <header class="w-full flex flex-col bg-[url('/images/png/homepage-herobg.png')] bg-right bg-no-repeat bg-contain bg-[#F2F0F1]">
+    <div class="container h-full">
+      <div class="flex flex-col items-start justify-center gap-8 h-full w-1/2 py-16">
+        <h1 class="text-6xl leading-tight font-bold font-cf">
+          FIND CLOTHES THAT MATCHES YOUR STYLE
+        </h1>
+        <p class="text-gray-500 text-xl">
+          Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality
+          and cater to your sense of style.
+        </p>
+        <AppButton>
+          Shop Now
+        </AppButton>
+        <div class="flex justify-between items-center gap-10">
+          <div v-for="quality in qualities" :key="quality.id">
+            <h2 class="text-4xl font-bold">
+              {{ quality.title }}
+            </h2>
+            <p class="text-gray-500 text-lg">
+              {{ quality.text }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</template>
