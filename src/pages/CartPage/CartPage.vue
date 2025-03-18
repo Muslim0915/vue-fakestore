@@ -27,10 +27,10 @@ const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 
 
 <template>
-  <div class="container mx-auto p-4 h-full">
+  <div class="container h-full flex flex-col gap-5">
     <div class="flex items-center justify-between max-md:flex-col max-md:gap-5">
-      <h1 class="text-3xl font-bold mb-6">Your Cart</h1>
-      <AppButton class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white"
+      <h1 class="text-3xl font-bold">Your Cart</h1>
+      <AppButton class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-4 py-2"
                  @click="cartStore.clearCart()">
         Clear Cart
       </AppButton>
@@ -46,11 +46,11 @@ const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
           </div>
         </div>
         <div class="flex gap-3">
-          <AppButton class="text-green-500 border border-green-500 hover:bg-green-500 hover:text-white"
+          <AppButton class="text-green-500 px-2 border border-green-500 hover:bg-green-500 hover:text-white"
                      @click="cartStore.addItem(item)">
             +
           </AppButton>
-          <AppButton class="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white"
+          <AppButton class="text-red-500 px-2 border border-red-500 hover:bg-red-500 hover:text-white"
                      @click="cartStore.removeItem(item)">
             -
           </AppButton>
@@ -59,7 +59,7 @@ const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 
       <div class="mt-6 flex justify-between items-center">
         <p class="text-2xl font-bold">Total: {{ totalPrice }}$</p>
-        <AppButton class="bg-blue-500 text-white hover:bg-blue-700" @click="checkout()">
+        <AppButton class="bg-blue-500 text-white hover:bg-blue-700 px-4 py-2" @click="checkout()">
           Checkout
         </AppButton>
       </div>
@@ -67,7 +67,7 @@ const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 
     <div v-else class="h-full flex flex-col items-center">
       <p class="text-2xl font-bold my-5">Your cart is empty.</p>
-      <AppButton class="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white"
+      <AppButton class="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2"
                  @click="$router.push('/products')">
         Shop Now
       </AppButton>
