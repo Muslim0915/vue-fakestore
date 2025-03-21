@@ -19,7 +19,16 @@ const qualities = [
           Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality
           and cater to your sense of style.
         </p>
-        <AppButton @click="$router.push('/products')" class="bg-dark-bg-color dark:bg-white text-white font-bold font-karla text-2xl dark:text-black rounded-full hover:scale-105 max-md:w-full py-4 px-16">
+        <AppButton
+            @click="$router.push('/products')"
+            class="bg-dark-bg-color border  dark:bg-white text-white
+            font-bold font-karla text-2xl
+            dark:text-black
+            dark:hover:bg-transparent max-md:w-full
+            dark:hover:text-white dark:hover:border-white
+            hover:text-gray-900
+            border-gray-900
+            py-4 px-16">
           Shop Now
         </AppButton>
         <div class="flex justify-between items-center gap-10 max-md:flex-col max-md:items-start">

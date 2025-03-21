@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useDark, useToggle } from "@vueuse/core";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import AppButton from "@/components/ui/AppButton.vue";
 import AppLogo from "@/components/AppLogo.vue";
@@ -30,18 +30,6 @@ const routes = computed(() => {
     { id: 4, path: "/login", title: "Login" },
   ];
 });
-
-const themeImagePath = ref("");
-
-watch(
-    isDark,
-    () => {
-      themeImagePath.value = isDark.value
-          ? "/images/svg/dark-mode.svg"
-          : "/images/svg/light-mode.svg";
-    },
-    { immediate: true }
-);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -80,7 +68,7 @@ const toggleMenu = () => {
         </AppButton>
         <AppButton @click="toggleDark()" class="w-full flex justify-center items-center h-full xl:px-4 xl:py-2">
           <img
-              :src="themeImagePath"
+              :src="isDark ? '/images/svg/dark-mode.svg' : '/images/svg/light-mode.svg'"
               :class="isDark ? 'invert' : ''"
               alt="theme-icon"
               width="50"

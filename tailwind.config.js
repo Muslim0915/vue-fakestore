@@ -18,7 +18,7 @@ export default {
       },
       backgroundColor: {
         "dark-bg-color": "#1f2937",
-        "light-bg-color": "#F2F0F1"
+        "light-bg-color": "#f6f6f6"
       },
     },
   },

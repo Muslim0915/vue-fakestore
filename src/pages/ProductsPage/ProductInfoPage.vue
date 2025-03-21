@@ -37,19 +37,17 @@ onMounted(async () => {
 <template>
   <div v-if="product" class="container mx-auto p-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-      <!-- Image -->
       <div class="flex justify-center">
         <img
             :src="product.images[0]"
             alt="Product image"
-            class="w-full max-w-md rounded-lg shadow-md dark:shadow-gray-300"
+            class="w-full max-w-md rounded-lg shadow-md shadow-gray-500 dark:shadow-gray-300"
         />
       </div>
       <div>
         <h1 class="text-3xl font-bold mb-4">{{ product.title }}</h1>
         <p class="text-lg mb-2">{{ product.description }}</p>
         <p class="font-bold text-2xl">Price: {{ product.price }}$</p>
-
         <ul class="mt-4 space-y-2">
           <li><strong>Category:</strong> {{ product.category }}</li>
           <li><strong>Brand:</strong> {{ product.brand }}</li>
@@ -79,16 +77,14 @@ onMounted(async () => {
     </div>
 
     <div v-if="product.reviews.length" class="mt-8">
-      <h2 class="text-xl font-bold mb-4">Reviews:</h2>
+      <h2 class="text-2xl font-bold mb-4">Reviews:</h2>
       <ul class="space-y-4">
         <li v-for="review in product.reviews" :key="review.reviewerEmail" class="border-b pb-4">
-          <p><strong>{{ review.reviewerName }}</strong> ({{ review.date }})</p>
-          <p>{{ review.comment }}</p>
-          <p>Rating: {{ review.rating }}/5</p>
+          <p class="text-xl font-bold ">{{ review.reviewerName }}</p>
+          <p class="text-lg text-gray-500 dark:text-gray-400">{{ review.comment }}</p>
+          <p class="text-md text-yellow-500 dark:text-yellow-400">Rating: {{ review.rating }}/5</p>
         </li>
       </ul>
     </div>
   </div>
-
-  <p v-else class="text-center text-xl">Loading product details...</p>
 </template>

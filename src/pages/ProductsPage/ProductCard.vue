@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {ref} from "vue";
 import {IProduct} from "@/services/typing";
 import AppButton from "@/components/ui/AppButton.vue";
 import {useCartStore} from "@/stores/cartStore.ts";
@@ -11,12 +10,6 @@ interface IProps {
 }
 
 defineProps<IProps>();
-
-const isImageValid = ref(true);
-
-const handleImageError = () => {
-  isImageValid.value = false;
-};
 const saveSelectedProduct = (product: IProduct) => {
   sessionStorage.setItem("selectedProduct", JSON.stringify(product));
 };
@@ -24,9 +17,9 @@ const saveSelectedProduct = (product: IProduct) => {
 
 <template>
   <div
-      v-if="isImageValid"
-      :key="product.id"
-      class="flex flex-col gap-4 rounded-xl shadow-md cursor-pointer dark:shadow-gray-300 p-4 shadow-gray-500"
+      class="flex flex-col gap-4 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-900 dark:shadow-gray-300
+      shadow-gray-700 shadow cursor-pointer hover:shadow-current hover:shadow-xl  transition
+      duration-300 p-4 "
       @click="saveSelectedProduct(product);
       $router.push(`/products/${product.id}`);"
   >
@@ -35,8 +28,6 @@ const saveSelectedProduct = (product: IProduct) => {
           :alt="product.category"
           :src="product.images[0]"
           class="rounded-lg object-cover w-3/5 h-full"
-          loading="lazy"
-          @error="handleImageError"
       />
     </div>
     <h3 class="text-xl font-bold ">
