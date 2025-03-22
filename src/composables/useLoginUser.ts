@@ -5,6 +5,7 @@ import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import { ref } from 'vue';
+import { IUserAuth } from '@/services/typing'
 
 export function useLoginUser() {
     const toast = useToast();
@@ -27,7 +28,7 @@ export function useLoginUser() {
                 throw new Error("User data not found in database");
             }
 
-            const userData = userSnapshot.val();
+            const userData: IUserAuth = userSnapshot.val();
 
             authStore.setUser(userData);
             toast.success("User logged in successfully");
