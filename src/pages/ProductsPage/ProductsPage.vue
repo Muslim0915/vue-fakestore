@@ -2,14 +2,13 @@
 import {computed, ref} from "vue";
 import { useProducts } from "@/composables/useProducts.ts";
 import { useFetch } from "@vueuse/core";
-import { useStore } from "@/stores/index.ts";
 import ProductCard from "@/pages/ProductsPage/ProductCard.vue";
 import AppFilter from "@/components/ui/AppFilter.vue";
 import AppSearch from "@/components/ui/AppSearch.vue";
 import { ICategory } from "@/services/typing";
 import ScrollTopButton from "@/components/ui/ScrollTopButton.vue";
+import config from '@/config.ts'
 
-const store = useStore();
 const filterValue = ref("");
 const searchQuery = ref("");
 const selectedCategory = ref("");
@@ -18,7 +17,7 @@ const { products, fetchProducts } = useProducts();
 
 
 // Загружаем категории
-const { data: categoriesData } = useFetch<ICategory[]>(`${store.state.API_URL}/products/categories`, {
+const { data: categoriesData } = useFetch<ICategory[]>(`${config.API_URL}/products/categories`, {
   afterFetch(ctx) {
     ctx.data = typeof ctx.data === "string" ? JSON.parse(ctx.data) : ctx.data;
     return ctx;
@@ -33,7 +32,7 @@ const applyFilter = (filter: { slug: string, url: string }) => {
   selectedCategory.value = filter.slug;
   fetchProducts(filter.url); // Теперь fetchProducts корректно получает URL
 };
-fetchProducts(`${store.state.API_URL}/products`);
+fetchProducts(`${config.API_URL}/products`);
 
 const categories = computed(() => categoriesData.value || []);
 const filteredProducts = computed(() => {
@@ -51,7 +50,7 @@ const filteredProducts = computed(() => {
     <div class="container flex gap-5 max-md:flex-col">
       <AppFilter
           :filterValue="filterValue"
-          :filters="[...categories, { url: `${store.state.API_URL}/products`, name: 'All Products', slug: 'All Products' }]"
+          :filters="[...categories, { url: `${config.API_URL}/products`, name: 'All Products', slug: 'All Products' }]"
           @applyFilters="applyFilter"
       />
       <div class="flex flex-col gap-5 flex-1">

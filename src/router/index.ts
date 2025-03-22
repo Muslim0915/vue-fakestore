@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useStore } from "@/stores/index.ts";
 import { useAuthStore } from "@/stores/authStore.ts";
-
+import { useGlobalStore } from '@/stores/globalStore.ts'
 
 const routes = [
     {
@@ -47,8 +46,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const store = useStore();
-    store.state.isLoading = true;
+    const globalStore = useGlobalStore();
+    globalStore.isLoading = true;
     const authStore = useAuthStore();
 
 
@@ -64,7 +63,8 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(() => {
-    useStore().state.isLoading = false
+    const globalStore = useGlobalStore();
+    globalStore.isLoading = false;
 })
 
 export default router

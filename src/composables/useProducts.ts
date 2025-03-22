@@ -1,14 +1,14 @@
 import { ref } from "vue";
-import { useStore } from "@/stores/index.ts";
 import { IProduct } from "@/services/typing";
 import { useFetch } from "@vueuse/core";
+import { useGlobalStore } from '@/stores/globalStore.ts'
 
 export function useProducts() {
-    const store = useStore();
+    const globalStore = useGlobalStore();
     const products = ref<IProduct[]>([]);
 
     const fetchProducts = async (url: string) => {
-        store.state.isLoading = true
+        globalStore.isLoading = true;
         try {
             const { data } = await useFetch(url).json();
 
@@ -19,7 +19,7 @@ export function useProducts() {
         catch (error) {
             console.error("Ошибка загрузки продуктов:", error);
         }
-        store.state.isLoading = false
+        globalStore.isLoading = false;
     };
 
     return {

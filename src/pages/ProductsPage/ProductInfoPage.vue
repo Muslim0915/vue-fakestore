@@ -3,11 +3,10 @@ import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProducts } from "@/composables/useProducts";
 import { IProduct } from "@/services/typing";
-import { useStore } from "@/stores/index.ts";
 import AppButton from "@/components/ui/AppButton.vue";
 import {useCartStore} from "@/stores/cartStore.ts";
+import config from '@/config.ts'
 
-const store = useStore();
 const cartStore = useCartStore()
 const route = useRoute();
 const router = useRouter();
@@ -28,7 +27,7 @@ onMounted(async () => {
   product.value = getSelectedProduct();
 
   if (!product.value) {
-    await fetchProducts(`${store.state.API_URL}/products`);
+    await fetchProducts(`${config.API_URL}/products`);
     product.value = products.value.find((p: IProduct) => p.id === Number(route.params.id)) || null;
   }
 });

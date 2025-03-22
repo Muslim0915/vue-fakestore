@@ -2,14 +2,16 @@
 import AppFooter from "@/components/AppFooter.vue";
 import AppNavbar from "@/components/AppNavbar.vue";
 import AppLoader from "@/components/AppLoader.vue";
-import { useStore } from "@/stores/index.ts";
+import { useGlobalStore } from '@/stores/globalStore.ts'
 
-const store = useStore();
+const globalStore = useGlobalStore();
+
+const isLoadingApp = globalStore.isLoading;
 </script>
 
 <template>
   <div class="app">
-    <AppLoader v-if="store.state.isLoading" />
+    <AppLoader v-if="isLoadingApp" />
     <AppNavbar />
     <main>
       <router-view />
