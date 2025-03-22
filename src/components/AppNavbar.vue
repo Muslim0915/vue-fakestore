@@ -6,28 +6,31 @@ import AppButton from "@/components/ui/AppButton.vue";
 import AppLogo from "@/components/AppLogo.vue";
 import BurgerMenuButton from "@/components/ui/BurgerMenuButton.vue";
 import { useCartStore } from "@/stores/cartStore.ts";
+import { useRouter } from 'vue-router'
 
 const cartStore = useCartStore();
 const authStore = useAuthStore();
+const router = useRouter();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 const isMenuOpen = ref(false);
 
+const user = computed(() => authStore.getUser);
 const counterCard = computed(() => cartStore.state.cartItems.length);
-
 const routes = computed(() => {
-  if (authStore.user) {
-    return [
-      { id: 1, path: "/", title: "Home" },
-      { id: 2, path: "/products", title: "Products" },
-    ];
+  const defaultNavBar = [
+    { id: 1, path: '/', title: 'Home' },
+    { id: 2, path: '/products', title: 'Products' },
+  ];
+
+  if (user.value) {
+    return defaultNavBar;
   }
   return [
-    { id: 1, path: "/", title: "Home" },
-    { id: 2, path: "/products", title: "Products" },
-    { id: 3, path: "/signup", title: "Sign Up" },
-    { id: 4, path: "/login", title: "Login" },
+    ...defaultNavBar,
+    { id: 3, path: '/signup', title: 'Sign Up' },
+    { id: 4, path: '/login', title: 'Login' },
   ];
 });
 
@@ -51,7 +54,7 @@ const toggleMenu = () => {
       </div>
 
       <div class="flex items-center gap-4">
-        <AppButton @click="$router.push('/cart')" class="w-full h-full flex justify-center relative items-center xl:px-4 xl:py-2">
+        <AppButton @click="router.push('/cart')" class="w-full h-full flex justify-center relative items-center xl:px-4 xl:py-2">
           <div class="relative">
             <img
                 src="@/assets/images/svg/shopping-bag.svg"
@@ -77,8 +80,8 @@ const toggleMenu = () => {
           >
         </AppButton>
           <button
-              v-if="authStore.user"
-              @click="$router.push('/profile')" class="flex justify-center items-center border border-black dark:border-white w-full  rounded-full"
+              v-if="user"
+              @click="router.push('/profile')" class="flex justify-center items-center border border-black dark:border-white w-full  rounded-full"
           >
             <img src="@/assets/images/svg/user-icon.svg" alt="user-icon" width="50" height="50" class=" dark:invert max-sm:w-10 max-sm:h-10">
           </button>

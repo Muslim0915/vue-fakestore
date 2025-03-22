@@ -1,15 +1,10 @@
 <script lang="ts" setup>
 import AppFooter from "@/components/AppFooter.vue";
 import AppNavbar from "@/components/AppNavbar.vue";
-import AppLoader from "@/components/AppLoader.vue";
-import { useStore } from "@/stores/index.ts";
-
-const store = useStore();
 </script>
 
 <template>
   <div class="app">
-    <AppLoader v-if="store.state.isLoading" />
     <AppNavbar />
     <main>
       <router-view />

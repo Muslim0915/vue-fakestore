@@ -10,18 +10,10 @@ import { countTotalPrice } from "@/utils/countTotalPrice.ts";
 const authStore = useAuthStore();
 const orders = ref<ICartItem[]>([]);
 
-const fetchOrders = async () => {
-  if (!authStore.user) return;
-  try {
-    const ordersSnapshot = await get(dbRef(database, `users/${authStore.user.uid}/orders`));
-    if (ordersSnapshot.exists()) {
-      orders.value = Object.values(ordersSnapshot.val());
-    }
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-  }
-};
-
+const user = computed(() => authStore.getUser);
+const userName = computed(() => user.value?.username ?? '');
+const userEmail = computed(() => user.value?.email ?? '');
+const totalPrice = computed(() => countTotalPrice<ICartItem>(uniqueOrders.value));
 const uniqueOrders = computed(() => {
   const mergedMap = new Map<number, ICartItem>();
 
@@ -36,7 +28,23 @@ const uniqueOrders = computed(() => {
   return Array.from(mergedMap.values());
 });
 
-const totalPrice = computed(() => countTotalPrice<ICartItem>(uniqueOrders.value));
+const fetchOrders = async () => {
+  if (!user.value) {
+    return;
+  }
+
+  try {
+    const userUid = user.value?.uid ?? null;
+    if (userUid) {
+      const ordersSnapshot = await get(dbRef(database, `users/${userUid}/orders`));
+      if (ordersSnapshot.exists()) {
+        orders.value = Object.values(ordersSnapshot.val());
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+  }
+};
 
 onMounted(fetchOrders);
 </script>
@@ -53,11 +61,12 @@ onMounted(fetchOrders);
           width="50"
       >
       <div class="flex flex-col gap-2">
-
-        <p class="text-gray-500 dark:text-white text-xl">Username: <span
-            class="text-red-500 text-2xl dark:text-red-500">{{ authStore.user?.username }}</span></p>
-        <p class="text-gray-500 dark:text-white text-xl">Email: <span
-            class="text-red-500 dark:text-red-500">{{ authStore.user?.email }}</span></p>
+        <p v-if="userName" class="text-gray-500 dark:text-white text-xl">
+          Username: <span class="text-red-500 text-2xl dark:text-red-500">{{ userName }}</span>
+        </p>
+        <p v-if="userEmail" class="text-gray-500 dark:text-white text-xl">
+          Email: <span class="text-red-500 dark:text-red-500">{{ userEmail }}</span>
+        </p>
       </div>
     </div>
     <h2 class="text-2xl font-bold mt-6">Your Orders</h2>

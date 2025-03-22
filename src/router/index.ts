@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useStore } from "@/stores/index.ts";
-import { useAuthStore } from "@/stores/authStore.ts";
-
+import { useAuthStore } from "@/stores/authStore";
 
 const routes = [
     {
@@ -12,7 +10,6 @@ const routes = [
         path: '/products',
         component: () => import('@/pages/ProductsPage/ProductsPage.vue'),
     },
-
     {
         path: '/cart',
         component: () => import('@/pages/CartPage/CartPage.vue'),
@@ -47,24 +44,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const store = useStore();
-    store.state.isLoading = true;
     const authStore = useAuthStore();
+    const isLoginOrSignUp = ['/login', '/signup'].includes(to.path);
 
-
-    if (authStore.user && (to.path === "/login" || to.path === "/signup")) {
-        return next("/");
+    if (authStore.getUser && isLoginOrSignUp) {
+        return next('/');
     }
-    if (to.meta.requiresAuth && !authStore.user) {
-        return next("/404");
+    if (to.meta.requiresAuth && !authStore.getUser) {
+        return next('/404');
     }
     next();
-    to.params
-    from.params
+    to.params;
+    from.params;
 });
-
-router.afterEach(() => {
-    useStore().state.isLoading = false
-})
 
 export default router

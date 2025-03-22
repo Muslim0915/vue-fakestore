@@ -1,22 +1,32 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router';
+import LocalStoreManager from '@/libs/storeManager/LocalStoreManager.ts'
+import type { IUserAuth } from '@/services/typing'
 
-export const useAuthStore = defineStore("auth", () => {
-    const user = ref(JSON.parse(localStorage.getItem("user") || "null"));
-    const router = useRouter();
-    const isAuthenticated = computed(() => !!user.value);
+interface IAuthStoreState {
+    user: IUserAuth | null;
+}
 
-    const setUser = (newUser: any) => {
-        user.value = newUser;
-        localStorage.setItem("user", JSON.stringify(newUser));
+const localStoreManager = new LocalStoreManager();
+
+export const useAuthStore = defineStore('auth', {
+    state: (): IAuthStoreState => ({
+        user: localStoreManager.getUser(),
+    }),
+    getters: {
+        getUser: (state): IUserAuth | null => state.user,
+    },
+    actions: {
+        setUser(newUser: IUserAuth) {
+            this.user = newUser;
+            localStoreManager.setUser<IUserAuth>(this.user);
+        },
+        logout() {
+            this.user = null;
+            localStoreManager.removeUser();
+
+            const router = useRouter();
+            router.push('/login');
+        }
     }
-
-    const logout = () => {
-        user.value = null;
-        localStorage.removeItem("user");
-        router.push("/login");
-    }
-
-    return { user, isAuthenticated, setUser, logout };
-});
+})
