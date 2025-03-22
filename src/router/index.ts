@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from "@/stores/authStore.ts";
-import { useGlobalStore } from '@/stores/globalStore.ts'
 
 const routes = [
     {
@@ -46,10 +45,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const globalStore = useGlobalStore();
-    globalStore.isLoading = true;
     const authStore = useAuthStore();
-
 
     if (authStore.user && (to.path === "/login" || to.path === "/signup")) {
         return next("/");
@@ -61,10 +57,5 @@ router.beforeEach((to, from, next) => {
     to.params
     from.params
 });
-
-router.afterEach(() => {
-    const globalStore = useGlobalStore();
-    globalStore.isLoading = false;
-})
 
 export default router

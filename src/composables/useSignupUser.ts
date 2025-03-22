@@ -2,17 +2,16 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref as dbRef, set } from "firebase/database";
 import { auth, database } from "@/firebase";
 import { useToast } from "vue-toastification";
-
+import { ref } from 'vue';
 import {useRouter} from "vue-router";
-import { useGlobalStore } from '@/stores/globalStore.ts'
 
 export function useSignupUser() {
     const toast = useToast();
-    const globalStore = useGlobalStore();
     const router = useRouter();
+    const isLoading = ref(false);
 
     const signupUser = async (email: string, password: string, username: string) => {
-        globalStore.isLoading = true;
+        isLoading.value = true;
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -37,7 +36,7 @@ export function useSignupUser() {
             toast.error("Error while creating user");
             return { error: error.message };
         } finally {
-            globalStore.isLoading = false;
+            isLoading.value = false;
         }
     };
 

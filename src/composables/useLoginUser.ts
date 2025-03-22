@@ -4,16 +4,16 @@ import { auth, database } from "@/firebase";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
-import { useGlobalStore } from '@/stores/globalStore.ts'
+import { ref } from 'vue';
 
 export function useLoginUser() {
     const toast = useToast();
     const router = useRouter();
-    const globalStore = useGlobalStore();
     const authStore = useAuthStore();
+    const isLoading = ref(false);
 
     const loginUser = async (email: string, password: string) => {
-        globalStore.isLoading = true;
+        isLoading.value = true;
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -38,9 +38,12 @@ export function useLoginUser() {
             toast.error("Error while logging in");
             return { error: error.message };
         } finally {
-            globalStore.isLoading = false;
+            isLoading.value = false;
         }
     };
 
-    return { loginUser };
+    return {
+        loginUser,
+        isLoading,
+    };
 }
