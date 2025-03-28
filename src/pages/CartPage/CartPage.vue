@@ -6,25 +6,28 @@ import { useAuthStore } from "@/stores/authStore";
 import { useOrders } from "@/composables/useOrders";
 import {countTotalPrice} from "@/utils/countTotalPrice.ts"; // Подключаем новый composable
 import { ICartItem } from "@/services/typing";
+import { useRouter } from 'vue-router'
+
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const orders = useOrders();
+const router = useRouter();
 
+// TODO: Добавить типизации
 const cartItems = computed(() => cartStore.state.cartItems);
+const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 
 const checkout = async () => {
   try {
-    await orders.placeOrder(authStore.user.uid, cartItems.value);
+    const user = authStore.getUser;
+    if (user) {
+      await orders.placeOrder(user.uid, cartItems.value);
+    }
   } catch (error) {
     console.error("Checkout error:", error);
   }
 };
-
-const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 </script>
-
-
-
 
 <template>
   <div class="container h-full flex flex-col gap-5">
@@ -68,7 +71,7 @@ const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
     <div v-else class="h-full flex flex-col items-center">
       <p class="text-2xl font-bold my-5">Your cart is empty.</p>
       <AppButton class="text-blue-500 border border-blue-500 hover:bg-blue-500 hover:text-white px-4 py-2"
-                 @click="$router.push('/products')">
+                 @click="router.push('/products')">
         Shop Now
       </AppButton>
     </div>

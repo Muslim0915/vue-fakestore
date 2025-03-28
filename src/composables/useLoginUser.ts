@@ -4,16 +4,17 @@ import { auth, database } from "@/firebase";
 import { useToast } from "vue-toastification";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
-import { useStore } from "@/stores";
+import { ref } from 'vue';
+import { IUserAuth } from '@/services/typing'
 
 export function useLoginUser() {
     const toast = useToast();
     const router = useRouter();
-    const store = useStore();
     const authStore = useAuthStore();
+    const isLoading = ref(false);
 
     const loginUser = async (email: string, password: string) => {
-        store.state.isLoading = true;
+        isLoading.value = true;
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
@@ -27,7 +28,7 @@ export function useLoginUser() {
                 throw new Error("User data not found in database");
             }
 
-            const userData = userSnapshot.val();
+            const userData: IUserAuth = userSnapshot.val();
 
             authStore.setUser(userData);
             toast.success("User logged in successfully");
@@ -38,9 +39,12 @@ export function useLoginUser() {
             toast.error("Error while logging in");
             return { error: error.message };
         } finally {
-            store.state.isLoading = false;
+            isLoading.value = false;
         }
     };
 
-    return { loginUser };
+    return {
+        loginUser,
+        isLoading,
+    };
 }
