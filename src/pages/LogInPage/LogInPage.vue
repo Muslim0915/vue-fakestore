@@ -5,7 +5,7 @@ import AppButton from "@/components/ui/AppButton.vue";
 import { useValidation } from "@/composables/useValidation.ts";
 import { useLoginUser } from "@/composables/useLoginUser.ts";
 import {useToast} from "vue-toastification";
-import AppLoader from '@/components/AppLoader.vue'
+import LoadingButton from "@/components/ui/LoadingButton.vue";
 
 
 const email = ref("");
@@ -29,9 +29,7 @@ const submitUserLogin = async () => {
 
 </script>
 
-<template>
-  <AppLoader v-if="isLoading" />
-  <template v-else>
+  <template>
     <div class="flex items-center flex-1 justify-center p-6">
       <div class="w-full max-w-md bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
         <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">Login</h2>
@@ -55,8 +53,11 @@ const submitUserLogin = async () => {
               autocomplete="password"
               id="password"
           />
-
+          <div class="w-full text-center flex justify-center items-center text-xl">
+            <LoadingButton class="w-full disabled:cursor-not-allowed" v-if="isLoading" />
+          </div>
           <AppButton
+              v-if="!isLoading"
               type="submit"
               @click="submitUserLogin()"
               class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition"
@@ -72,4 +73,3 @@ const submitUserLogin = async () => {
       </div>
     </div>
   </template>
-</template>

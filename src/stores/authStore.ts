@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router';
 import LocalStoreManager from "@/libs/storeManager/LocalStoreManager.ts";
 import type { IUserAuth } from '@/services/typing'
-import {computed, reactive, toRaw} from "vue";
+import { computed, reactive } from "vue";
 
 interface IAuthStoreState {
     user: IUserAuth | null;
@@ -19,13 +18,13 @@ export const useAuthStore = defineStore('auth', () => {
 
     const setUser = (newUser: IUserAuth) => {
         state.user = newUser;
-        localStoreManager.setUser<IUserAuth>(toRaw(state.user));
+        localStoreManager.setUser<IUserAuth>(state.user);
     }
 
-    const logout = ()=> {
+    const logout = (router: any) => {
         state.user = null;
         localStoreManager.removeUser();
-        useRouter().push('/login').then(() => {});
+        router.push('/login');
     }
 
     return {

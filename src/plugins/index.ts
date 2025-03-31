@@ -11,6 +11,7 @@ const usePlugins = (app: App) => {
     app
         .use(router)
         .use(pinia)
+        .provide('router', router)
         .use(Toast, toastOptions());
 }
 
