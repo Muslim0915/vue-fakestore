@@ -33,7 +33,7 @@ export function useLoginUser() {
             authStore.setUser(userData);
             toast.success("User logged in successfully");
 
-            await router.push("/");
+            await router.push("/profile");
         } catch (error: any) {
             console.error(error);
             toast.error("Error while logging in");

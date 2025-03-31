@@ -43,7 +43,9 @@ onMounted(async () => {
           <img
               :src="product.images[0]"
               alt="Product image"
-              class="w-full max-w-md rounded-lg shadow-md shadow-gray-500 dark:shadow-gray-300"
+              class="w-full max-w-md bg-gray-300 rounded-lg dark:bg-gray-400 "
+              width="400"
+              height="400"
           />
         </div>
         <div>

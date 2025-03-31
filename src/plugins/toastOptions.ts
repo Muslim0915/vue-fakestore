@@ -1,0 +1,15 @@
+export const toastOptions = () => ({
+    position: "top-right",
+    timeout: 1500,
+    closeOnClick: true,
+    pauseOnFocusLoss: false,
+    pauseOnHover: false,
+    draggable: true,
+    draggablePercent: 60,
+    showCloseButtonOnHover: true,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+    maxToasts: 1,
+});

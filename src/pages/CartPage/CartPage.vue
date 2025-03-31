@@ -4,22 +4,26 @@ import AppButton from "@/components/ui/AppButton.vue";
 import { useCartStore } from "@/stores/cartStore";
 import { useAuthStore } from "@/stores/authStore";
 import { useOrders } from "@/composables/useOrders";
-import {countTotalPrice} from "@/utils/countTotalPrice.ts"; // Подключаем новый composable
+import { countTotalPrice } from "@/utils/countTotalPrice.ts";
 import { ICartItem } from "@/services/typing";
 import { useRouter } from 'vue-router'
+import { useToast } from "vue-toastification";
 
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const orders = useOrders();
 const router = useRouter();
 
-// TODO: Добавить типизации
-const cartItems = computed(() => cartStore.state.cartItems);
+const cartItems = computed<ICartItem[]>(() => cartStore.state.cartItems);
 const totalPrice = computed(() => countTotalPrice<ICartItem>(cartItems.value));
 
 const checkout = async () => {
   try {
     const user = authStore.getUser;
+    if (!user) {
+      useToast().error('You must be logged in to place an order.');
+      await router.push('/login');
+    }
     if (user) {
       await orders.placeOrder(user.uid, cartItems.value);
     }
@@ -42,7 +46,13 @@ const checkout = async () => {
     <div v-if="cartItems.length > 0" class="flex flex-col gap-4">
       <div v-for="item in cartItems" :key="item.id" class="flex items-center justify-between border-b py-4">
         <div class="flex items-center gap-4">
-          <img :alt="item.title" :src="item.images[0]" class="w-20 h-20 object-cover rounded-lg">
+          <img
+              :alt="item.title"
+              :src="item.images[0]"
+              class="w-20 h-20 object-cover rounded-lg"
+              width="100"
+              height="100"
+          >
           <div>
             <h3 class="text-xl font-bold">{{ item.title }}</h3>
             <p class="text-gray-600">{{ item.price }}$ x {{ item.quantity }}</p>

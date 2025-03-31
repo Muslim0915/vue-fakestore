@@ -6,6 +6,7 @@ import { database } from "@/firebase";
 import {ICartItem} from "@/services/typing";
 import AppButton from "@/components/ui/AppButton.vue";
 import { countTotalPrice } from "@/utils/countTotalPrice.ts";
+import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const orders = ref<ICartItem[]>([]);
@@ -14,6 +15,7 @@ const user = computed(() => authStore.getUser);
 const userName = computed(() => user.value?.username ?? '');
 const userEmail = computed(() => user.value?.email ?? '');
 const totalPrice = computed(() => countTotalPrice<ICartItem>(uniqueOrders.value));
+
 const uniqueOrders = computed(() => {
   const mergedMap = new Map<number, ICartItem>();
 
@@ -79,7 +81,7 @@ onMounted(fetchOrders);
            flex gap-2 my-2
           dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700 hover:text-gray-100
 "
-          @click="$router.push(`/products/${order.id}`)">
+          @click="useRouter().push(`/products/${order.id}`)">
         <div>
           <img
               :src="order.images[0]"

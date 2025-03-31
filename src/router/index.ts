@@ -43,7 +43,7 @@ const router = createRouter({
     linkExactActiveClass: 'text-gray-600 border-b-2 border-gray-600 dark:text-gray-400 dark:border-gray-400',
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
     const authStore = useAuthStore();
     const isLoginOrSignUp = ['/login', '/signup'].includes(to.path);
 
@@ -51,11 +51,9 @@ router.beforeEach((to, from, next) => {
         return next('/');
     }
     if (to.meta.requiresAuth && !authStore.getUser) {
-        return next('/404');
+        return next('/login');
     }
     next();
-    to.params;
-    from.params;
 });
 
 export default router

@@ -1,9 +1,7 @@
 import { defineStore } from "pinia";
 import {  reactive } from "vue";
 import { useToast } from "vue-toastification";
-import {ICartItem, IProduct} from "@/services/typing";
-
-const toast = useToast();
+import type { ICartItem, IProduct } from "@/services/typing";
 
 export const useCartStore = defineStore('cart', () => {
     const state = reactive({
@@ -17,11 +15,9 @@ export const useCartStore = defineStore('cart', () => {
     const addItem = (product: IProduct) => {
         const existingItem = state.cartItems.find((item: ICartItem) => item.id === product.id);
         if (existingItem) {
-            toast.success('More of this product added to cart');
             existingItem.quantity += 1;
         } else {
             state.cartItems.push({ ...product, quantity: 1 });
-            toast.success('Product added to cart');
         }
         saveToLocalStorage();
     };
@@ -30,14 +26,15 @@ export const useCartStore = defineStore('cart', () => {
         const existingItem = state.cartItems.find((item: ICartItem) => item.id === product.id);
         if (existingItem) {
             existingItem.quantity > 1 ? existingItem.quantity-- : state.cartItems.splice(state.cartItems.indexOf(existingItem), 1);
-            toast.info('Product quantity updated');
         }
         saveToLocalStorage();
     };
 
     const clearCart = () => {
+        if (state.cartItems.length === 0) return;
         state.cartItems = [];
         saveToLocalStorage();
+        useToast().info('Cart cleared');
     };
     return {
         state,

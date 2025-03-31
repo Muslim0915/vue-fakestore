@@ -1,38 +1,29 @@
 <script lang="ts" setup>
 import { useDark, useToggle } from "@vueuse/core";
 import { computed, ref } from "vue";
-import { useAuthStore } from "@/stores/authStore";
-import AppButton from "@/components/ui/AppButton.vue";
 import AppLogo from "@/components/AppLogo.vue";
 import BurgerMenuButton from "@/components/ui/BurgerMenuButton.vue";
 import { useCartStore } from "@/stores/cartStore.ts";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
+import type { ICartItem } from "@/services/typing";
 
 const cartStore = useCartStore();
-const authStore = useAuthStore();
-const router = useRouter();
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
+const router = useRouter();
+
 const isMenuOpen = ref(false);
 
-const user = computed(() => authStore.getUser);
-const counterCard = computed(() => cartStore.state.cartItems.length);
-const routes = computed(() => {
-  const defaultNavBar = [
-    { id: 1, path: '/', title: 'Home' },
-    { id: 2, path: '/products', title: 'Products' },
-  ];
-
-  if (user.value) {
-    return defaultNavBar;
-  }
-  return [
-    ...defaultNavBar,
-    { id: 3, path: '/signup', title: 'Sign Up' },
-    { id: 4, path: '/login', title: 'Login' },
-  ];
+const counterCard = computed(() => {
+  if (!cartStore.state.cartItems || cartStore.state.cartItems.length === 0) return;
+  return cartStore.state.cartItems.reduce((acc: number, item: ICartItem) => acc + item.quantity, 0);
 });
+
+const navBarMenu = [
+  { id: 1, path: "/", title: "Home" },
+  { id: 2, path: "/products", title: "Products" },
+]
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -46,7 +37,11 @@ const toggleMenu = () => {
       <div class="flex items-center gap-10 max-md:flex-col max-md:absolute max-md:top-0 max-md:w-full max-md:flex-grow max-md:min-h-screen max-md:bg-white dark:bg-gray-900 max-md:shadow-md max-md:z-10 max-md:pt-10 transition-all ease-in-out duration-300"
            :class="isMenuOpen ? 'max-md:right-0' : 'max-md:right-[-200%]'"
       >
-        <div v-for="route in routes" :key="route.id" @click="toggleMenu()">
+        <div
+            v-for="route in navBarMenu"
+            :key="route.id"
+            @click="toggleMenu()"
+        >
           <router-link :to="route.path" class="xl:text-2xl font-bold mr-4 uppercase">
             {{ route.title }}
           </router-link>
@@ -54,38 +49,42 @@ const toggleMenu = () => {
       </div>
 
       <div class="flex items-center gap-4">
-        <AppButton @click="router.push('/cart')" class="w-full h-full flex justify-center relative items-center xl:px-4 xl:py-2">
-          <div class="relative">
+        <button
+            @click="router.push('/profile')" class="flex justify-center items-center w-full"
+        >
+          <img
+              src="@/assets/images/svg/user-icon.svg"
+              alt="user-icon"
+              width="50"
+              height="50"
+              class=" dark:invert max-sm:w-10 max-sm:h-10"
+          >
+        </button>
+        <button @click="router.push('/cart')" class="w-full h-full flex justify-center relative items-center xl:px-4 xl:py-2">
+          <span class="relative">
             <img
                 src="@/assets/images/svg/shopping-bag.svg"
                 alt="cart-icon"
                 width="50"
                 height="50"
-                :class="isDark ? 'invert' : ''"
-                class="max-sm:w-10 max-sm:h-10">
-          </div>
-          <span v-if="counterCard > 0"
-                class="absolute -top-0 -right-0 text-sm font-karla font-bold text-white bg-red-500 rounded-full w-6 h-6 flex justify-center items-center">
+                class="max-sm:w-10 max-sm:h-10 dark:invert">
+            <i v-if="counterCard > 0"
+                  class="absolute -top-2 -right-2 text-sm font-karla font-bold text-white bg-red-500 rounded-full w-6 h-6 flex justify-center items-center">
             {{ counterCard }}
+          </i>
           </span>
-        </AppButton>
-        <AppButton @click="toggleDark()" class="w-full flex justify-center items-center h-full xl:px-4 xl:py-2">
+        </button>
+        <button
+            @click="toggleDark()"
+            class="w-full flex justify-center items-center h-full xl:px-4 xl:py-2">
           <img
               :src="isDark ? '/images/svg/dark-mode.svg' : '/images/svg/light-mode.svg'"
-              :class="isDark ? 'invert' : ''"
               alt="theme-icon"
               width="50"
               height="50"
-              class="max-sm:w-10 max-sm:h-10"
+              class="max-sm:w-10 max-sm:h-10 dark:invert"
           >
-        </AppButton>
-          <button
-              v-if="user"
-              @click="router.push('/profile')" class="flex justify-center items-center border border-black dark:border-white w-full  rounded-full"
-          >
-            <img src="@/assets/images/svg/user-icon.svg" alt="user-icon" width="50" height="50" class=" dark:invert max-sm:w-10 max-sm:h-10">
-          </button>
-
+        </button>
         <BurgerMenuButton :isMenuOpen="isMenuOpen" @toggleMenu="toggleMenu()" class="w-full h-full z-20"/>
       </div>
     </div>
