@@ -6,7 +6,7 @@ import { IProduct } from "@/services/typing";
 import AppButton from "@/components/ui/AppButton.vue";
 import {useCartStore} from "@/stores/cartStore.ts";
 import config from '@/config.ts'
-import AppLoader from '@/components/AppLoader.vue'
+import ProductsLoader from "./ProductsLoader.vue";
 
 const cartStore = useCartStore()
 const route = useRoute();
@@ -34,9 +34,10 @@ onMounted(async () => {
 });
 </script>
 
-<template>
-  <AppLoader v-if="isLoading" />
-  <template v-else>
+  <template>
+    <div v-if="isLoading" class="w-full h-full flex justify-center items-center">
+    <ProductsLoader />
+    </div>
     <div v-if="product" class="container mx-auto p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         <div class="flex justify-center">
@@ -92,4 +93,3 @@ onMounted(async () => {
       </div>
     </div>
   </template>
-</template>

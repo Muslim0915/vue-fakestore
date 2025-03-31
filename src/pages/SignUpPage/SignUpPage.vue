@@ -4,7 +4,7 @@ import { ref } from "vue";
 import AppButton from "@/components/ui/AppButton.vue";
 import { useSignupUser } from "@/composables/useSignupUser";
 import { useValidation } from "@/composables/useValidation";
-import {useToast} from "vue-toastification";
+import { useToast } from "vue-toastification";
 
 const username = ref("");
 const email = ref("");

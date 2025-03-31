@@ -8,7 +8,7 @@ import AppSearch from "@/components/ui/AppSearch.vue";
 import { ICategory } from "@/services/typing";
 import ScrollTopButton from "@/components/ui/ScrollTopButton.vue";
 import config from '@/config.ts'
-import AppLoader from '@/components/AppLoader.vue'
+import ProductsLoader from "@/pages/ProductsPage/ProductsLoader.vue";
 
 const filterValue = ref("");
 const searchQuery = ref("");
@@ -46,9 +46,9 @@ const filteredProducts = computed(() => {
 
 </script>
 
-<template>
-  <AppLoader v-if="isLoading" />
-  <template v-else>
+
+
+  <template>
     <section class="flex w-full flex-col">
       <div class="container flex gap-5 max-md:flex-col">
         <AppFilter
@@ -68,7 +68,11 @@ const filteredProducts = computed(() => {
                 @update:searchQuery="updateSearchQuery($event)"
             />
           </div>
-          <div class="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-10">
+          <div v-if="isLoading" class="w-full h-full flex justify-center items-center">
+            <ProductsLoader />
+          </div>
+          <div v-else class="grid xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-10">
+
             <ProductCard
                 v-for="product in filteredProducts"
                 :key="product.id"
@@ -80,4 +84,3 @@ const filteredProducts = computed(() => {
       </div>
     </section>
   </template>
-</template>
